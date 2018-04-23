@@ -9,7 +9,7 @@ import './styles.css';
 //     let city = $('#location').val();
 //     $('#location').val("");
 //     $.ajax({
-//       url: `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=824e7d016b37abfe8ef399ccfe0b45c5`,
+//       url: `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.API_KEY}`,
 //       type: 'GET',
 //       data: {
 //         format: 'json'
@@ -31,8 +31,13 @@ $(document).ready(function() {
     let city = $('#location').val();
     $('#location').val("");
 
+    let getElements = function(response) {
+      $('.showHumidity').text(`The humidity in ${city} is ${response.main.humidity}%`);
+      $('.showTemp').text(`The temperature in Kelvins is ${response.main.temp} degrees.`);
+    }
+
     let request = new XMLHttpRequest();
-    let url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=[API-KEY-GOES-HERE]`;
+    let url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.API_KEY}`;
 
     request.onreadystatechange = function() {
       if (this.readyState === 4 && this.status === 200) {
@@ -43,10 +48,5 @@ $(document).ready(function() {
 
     request.open("GET", url, true);
     request.send();
-
-    getElements = function(response) {
-      $('.showHumidity').text(`The humidity in ${city} is ${response.main.humidity}%`);
-      $('.showTemp').text(`The temperature in Kelvins is ${response.main.temp} degrees.`);
-    }
   });
 });
